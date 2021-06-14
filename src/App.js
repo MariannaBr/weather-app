@@ -1,56 +1,53 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import logo from "./logo.svg";
+import { Counter } from "./features/counter/Counter";
+import TempCheck from "./features/Components/TempCheck";
+import DayCard from "./features/Components/DayCard";
+import Arrow from "./features/Components/Arrow";
+import Grid from "@material-ui/core/Grid";
+import "./App.css";
 
 function App() {
+  let loading = true;
+  let data = {};
+  let days_visible = [0, 1, 2];
+
+  const [weatherData, SetWeatherData] = useState({});
+
+  useEffect(() => {
+    fetch(
+      `http://api.openweathermap.org/data/2.5/forecast?q=Munich,de&APPID=${process.env.WEATHER_API_KEY}&cnt=40`,
+      { method: "GET" }
+    )
+      .then((res) => {
+        if (res.ok) return res.json();
+        else throw new Error();
+      })
+      .then((res) => {
+        SetWeatherData(res);
+      });
+
+    //console.log(weatherData.city.name)
+  }, [weatherData]);
+
+  const city = weatherData.city;
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <img src={logo} className="App-logo" alt="logo" />
+      <Counter />
+      <TempCheck />
+      <Grid container direction="row" justify="space-around">
+        <Arrow left={true} />
+        <Arrow left={false} />
+      </Grid>
+      <Grid container direction="row" justify="space-evenly">
+        {days_visible.map((day) => (
+          <Grid key={day} item>
+            <DayCard />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }
