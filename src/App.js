@@ -1,6 +1,7 @@
 import TempCheck from "./features/Components/TempCheck";
 import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
+import Graph from "./features/Components/Graph";
 import { Grid, DataGrid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -13,12 +14,6 @@ function App() {
   const weatherData = useSelector(selectWeather);
   const loading = useSelector((state) => state.weather.isLoading);
 
-  const days = findMeasurementsOfDay(weatherData);
-
-  const handleChange = (event) => {
-    setTempType(event.target.value);
-  };
-
   if (loading) {
     return (
       <div>
@@ -26,6 +21,27 @@ function App() {
       </div>
     );
   } else {
+    const days = findMeasurementsOfDay(weatherData);
+
+    console.log("days", days);
+
+    const getTimeAndTemp = (data) => {
+      let times = [];
+      let values = [];
+      let GraphData = { measurementTimes: times, measuredTemperatures: values };
+      for (var i = 0; i < data.length; i++) {
+        times.push(data[i].time);
+        values.push(data[i].main.temp);
+      }
+      return GraphData;
+    };
+
+    const graphData = getTimeAndTemp(days[0])
+
+    const handleChange = (event) => {
+      setTempType(event.target.value);
+    };
+
     return (
       <div className="App">
         <TempCheck value={tempType} handleChange={handleChange} />
@@ -40,6 +56,7 @@ function App() {
             </Grid>
           ))}
         </Grid>
+        <Graph data={graphData} />
       </div>
     );
   }

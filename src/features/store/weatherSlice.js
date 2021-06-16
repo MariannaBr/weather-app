@@ -1,4 +1,3 @@
-import { Restaurant, RestoreOutlined } from "@material-ui/icons";
 import { createSlice } from "@reduxjs/toolkit";
 require('dotenv').config()
 
