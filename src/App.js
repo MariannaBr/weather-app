@@ -1,44 +1,47 @@
 import TempCheck from "./features/Components/TempCheck";
 import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
-import Grid from "@material-ui/core/Grid";
-import { useSelector } from "react-redux"
-import { selectWeather } from "./features/store/weatherSlice"
+import { Grid, DataGrid } from "@material-ui/core";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { selectWeather } from "./features/store/weatherSlice";
+import { findMeasurementsOfDay } from "./features/helper functions/dayData";
 import "./App.css";
 
 function App() {
+  const [tempType, setTempType] = useState("Fahrenheit");
+  const weatherData = useSelector(selectWeather);
+  const loading = useSelector((state) => state.weather.isLoading);
 
-  let days_visible = [0, 1, 2];
+  const days = findMeasurementsOfDay(weatherData);
 
-  const weatherData = useSelector(selectWeather)
-  const loading = useSelector(state => state.weather.isLoading)
-
-  console.log("data", weatherData)
-  console.log("loading", loading)
+  const handleChange = (event) => {
+    setTempType(event.target.value);
+  };
 
   if (loading) {
     return (
       <div>
         <TempCheck />
       </div>
-    )
+    );
   } else {
     return (
       <div className="App">
-      <TempCheck />
-      <Grid container direction="row" justify="space-around">
-        <Arrow left={true} />
-        <Arrow left={false} />
-      </Grid>
-      <Grid container direction="row" justify="space-evenly">
-        {days_visible.map((day) => (
-          <Grid key={day} item>
-            <DayCard />
-          </Grid>
-        ))}
-      </Grid>
-    </div>
-    )
+        <TempCheck value={tempType} handleChange={handleChange} />
+        <Grid container direction="row" justify="space-around">
+          <Arrow left={true} />
+          <Arrow left={false} />
+        </Grid>
+        <Grid container direction="row" justify="space-evenly">
+          {days.map((day) => (
+            <Grid key={day[0].dayId} item>
+              <DayCard dayData={day} tempType={tempType} />
+            </Grid>
+          ))}
+        </Grid>
+      </div>
+    );
   }
 }
 

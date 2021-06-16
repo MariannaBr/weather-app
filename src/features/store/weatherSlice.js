@@ -1,3 +1,4 @@
+import { Restaurant, RestoreOutlined } from "@material-ui/icons";
 import { createSlice } from "@reduxjs/toolkit";
 require('dotenv').config()
 
@@ -18,12 +19,34 @@ const weatherSlice = createSlice({
       state.data = action.payload;
       state.isLoading = false;
     },
+    addDayId(state, action) {
+      const { id, dayId } = action.payload
+      state.data.list[id].dayId = dayId
+    }
   },
 });
 
-export const { dataLoading, dataLoaded } = weatherSlice.actions;
+export const { dataLoading, dataLoaded, addDayId } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
+
+function preprocessData(data) {
+
+  let allMeasurements = data.list
+  
+  const dayId = allMeasurements[0].dt_txt.split(" ")[0]
+  const time = allMeasurements[0].dt_txt.split(" ")[1]
+  allMeasurements[0].dayId = dayId
+  allMeasurements[0].time = time
+
+  for ( var i=1; i<allMeasurements.length; i++ ) {
+    const dayId = allMeasurements[i].dt_txt.split(" ")[0]
+    const time = allMeasurements[i].dt_txt.split(" ")[1]
+    allMeasurements[i].dayId = dayId
+    allMeasurements[i].time = time
+  }
+  return allMeasurements
+}
 
 // Thunk function for async fetching of data
 export const fetchData = () => async (dispatch) => {
@@ -34,7 +57,7 @@ export const fetchData = () => async (dispatch) => {
     { method: "GET" })
   data = await response.json()
   if (response.ok) {
-    dispatch(dataLoaded(data))
+    dispatch(dataLoaded(preprocessData(data)))
   } else {
     throw new Error(response.statusText)
   }

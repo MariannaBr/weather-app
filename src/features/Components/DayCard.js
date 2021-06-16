@@ -1,45 +1,56 @@
 import React from 'react'
-import { Card, CardContent } from '@material-ui/core'
-import { useSelector } from 'react-redux'
+import { Card, CardContent, Typography } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
 
-const DayCard = () => {
+const useStyles = makeStyles({
+  root: {
+    minWidth: 275,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold'
+  },
+  pos: {
+    marginBottom: 12,
+  },
+});
 
-  const allMeasurements = useSelector(state => state.weather.data)
-  const days = []
+const DayCard = (props) => {
 
-  console.log("meas", allMeasurements)
+  const classes = useStyles();
+  const dayMeasurements = props.dayData
+  const year = dayMeasurements[0].dayId.split("-")[0]
+  const month = dayMeasurements[0].dayId.split("-")[1]
+  const day = dayMeasurements[0].dayId.split("-")[2]
+  const date = day + ". " + month + ". " + year
 
-  const addId = (data) => {
-    if (data) {
-      console.log("data in Daycard", data)
-      const id = data.list[0].dt_txt.split(" ")[0]
-      console.log("id of 0", id)
-      //data.list[0].dayId = id
+  const averageTemp = (data) => {
+    let tempSum = 0
+    for (var i=0; i< data.length; i++) {
+      tempSum += data[i].main.temp
     }
-  }
-  addId(allMeasurements)
-
-  for ( var i=1; i<allMeasurements.length; i++ ) {
-    const id = allMeasurements[i].dt_txt.split(" ")[0]
-    allMeasurements[i].dayId = id
-    if (allMeasurements[i].dayId === allMeasurements[i-1].dayId) {
-        console.log("ids", allMeasurements[i].dayId, allMeasurements[i-1].dayId)
-        console.log("same")
-      } else {
-        console.log("ids", allMeasurements[i].dayId, allMeasurements[i-1].dayId)
-        console.log("not same")
-      }
-
-    days.push(allMeasurements[i])
+    const Temperature = (tempSum / data.length).toFixed()
+    return Temperature
   }
 
-  //console.log("days", days)
+  const averageTemperature = averageTemp(dayMeasurements)
+  let temperatureType
+  if (props.tempType === "Fahrenheit") {
+    temperatureType = "F"
+  } else if (props.tempType === "Celcius") {
+    temperatureType = "°C"
+  }
 
 
   return(
     <Card>
       <CardContent>
-        <h2>Hello</h2>
+        <Typography className={classes.title}>
+          Date: {date}
+        </Typography>
+        <Typography className={classes.title}>
+          Temp: {averageTemperature} {temperatureType}
+        </Typography>
       </CardContent>
     </Card>
   )
