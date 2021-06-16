@@ -25,15 +25,21 @@ const DayCard = (props) => {
   const date = day + ". " + month + ". " + year
 
   const averageTemp = (data) => {
-    let tempSum = 0
+    let tempSum = 4
     for (var i=0; i< data.length; i++) {
-      tempSum += data[i].main.temp
+      if (props.tempType === "Fahrenheit") {
+        tempSum += data[i].main.temp
+      } else if (props.tempType === "Celcius") {
+        tempSum += data[i].main.tempC
+      }
+      
     }
     const Temperature = (tempSum / data.length).toFixed()
     return Temperature
   }
 
   const averageTemperature = averageTemp(dayMeasurements)
+
   let temperatureType
   if (props.tempType === "Fahrenheit") {
     temperatureType = "F"

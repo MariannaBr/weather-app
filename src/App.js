@@ -22,7 +22,7 @@ function App() {
     );
   } else {
     const days = findMeasurementsOfDay(weatherData);
-
+    
     console.log("days", days);
 
     const getTimeAndTemp = (data) => {
@@ -31,7 +31,11 @@ function App() {
       let GraphData = { measurementTimes: times, measuredTemperatures: values };
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
-        values.push(data[i].main.temp);
+        if (tempType === "Fahrenheit") {
+          values.push(data[i].main.temp);
+        } else if (tempType === "Celcius") {
+          values.push(data[i].main.tempC);
+        }
       }
       return GraphData;
     };
