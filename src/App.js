@@ -1,41 +1,30 @@
-import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
-import { Counter } from "./features/counter/Counter";
 import TempCheck from "./features/Components/TempCheck";
 import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
 import Grid from "@material-ui/core/Grid";
+import { useSelector } from "react-redux"
+import { selectWeather } from "./features/store/weatherSlice"
 import "./App.css";
 
 function App() {
-  let loading = true;
-  let data = {};
+
   let days_visible = [0, 1, 2];
 
-  const [weatherData, SetWeatherData] = useState({});
+  const weatherData = useSelector(selectWeather)
+  const loading = useSelector(state => state.weather.isLoading)
 
-  useEffect(() => {
-    fetch(
-      `http://api.openweathermap.org/data/2.5/forecast?q=Munich,de&APPID=${process.env.WEATHER_API_KEY}&cnt=40`,
-      { method: "GET" }
+  console.log("data", weatherData)
+  console.log("loading", loading)
+
+  if (loading) {
+    return (
+      <div>
+        <TempCheck />
+      </div>
     )
-      .then((res) => {
-        if (res.ok) return res.json();
-        else throw new Error();
-      })
-      .then((res) => {
-        SetWeatherData(res);
-      });
-
-    //console.log(weatherData.city.name)
-  }, [weatherData]);
-
-  const city = weatherData.city;
-
-  return (
-    <div className="App">
-      <img src={logo} className="App-logo" alt="logo" />
-      <Counter />
+  } else {
+    return (
+      <div className="App">
       <TempCheck />
       <Grid container direction="row" justify="space-around">
         <Arrow left={true} />
@@ -49,7 +38,8 @@ function App() {
         ))}
       </Grid>
     </div>
-  );
+    )
+  }
 }
 
 export default App;
