@@ -6,10 +6,28 @@ import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectWeather } from "./features/store/weatherSlice";
-import { findMeasurementsOfDay } from "./features/helper functions/dayData";
+import findMeasurementsOfDay from "./features/helper_functions/dayData";
 import "./App.css";
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles((theme) => ({
+  grid: {
+    padding: "2px",
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: "center",
+      alignItems: "center",
+      maxWidth: 400
+    }
+  },
+  loading: {
+    fontSize: "32px",
+    fontWeight: "bold",
+    color: "blue"
+  }
+}));
 
 function App() {
+  const classes = useStyles();
   const [tempType, setTempType] = useState("Fahrenheit");
   const [arrowIndex, setArrowIndex] = useState(0)
   const [graphId, setGraphId] = useState("")
@@ -18,8 +36,10 @@ function App() {
 
   if (loading) {
     return (
-      <div>
-        <TempCheck />
+      <div className="App">
+      <div className={classes.loading}>
+        Loading
+      </div>
       </div>
     );
   } else {
@@ -30,7 +50,6 @@ function App() {
       let times = [];
       let values = [];
       let title = data[0].dayId
-      console.log(title)
       let GraphData = { title: title, measurementTimes: times, measuredTemperatures: values };
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
@@ -65,8 +84,6 @@ function App() {
       setGraphId("")
     }
 
-    
-
     return (
       <div className="App">
         <TempCheck value={tempType} handleChange={handleChange} />
@@ -76,7 +93,7 @@ function App() {
         </Grid>
         <Grid container direction="row" justify="space-evenly">
           {daysToShow.map((day) => (
-            <Grid key={day[0].dayId} item>
+            <Grid key={day[0].dayId} item className={classes.grid}>
               <DayCard dayData={day} tempType={tempType} handler={graphIdHandler} />
             </Grid>
           ))}

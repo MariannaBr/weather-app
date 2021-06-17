@@ -1,22 +1,28 @@
-import React from 'react'
-import Chart from 'react-apexcharts'
-import { makeStyles } from '@material-ui/core/styles'
+import React from "react";
+import Chart from "react-apexcharts";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: {
-    padding: "5rem",
+    padding: "4px",
+    paddingTop: "60px"
+  },
+  chart: {
+    width: "600px",
+    [theme.breakpoints.down('sm')]: {
+      width: "100%"
+    }
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   pos: {
     marginBottom: 12,
   },
-});
+}));
 
 const Graph = (props) => {
-
   const classes = useStyles();
 
   const options = {
@@ -28,44 +34,50 @@ const Graph = (props) => {
       labels: {
         style: {
           colors: "#D1D5DB",
-          fontSize: '14px'
-        }
-      }
+          fontSize: "14px",
+        },
+      },
     },
     yaxis: {
       labels: {
         style: {
           colors: "#D1D5DB",
-          fontSize: '14px'
-        }
-      }
+          fontSize: "14px",
+        },
+      },
     },
     dataLabels: {
+      enabled: false,
       offsetY: 20,
       style: {
-        fontSize: '16px',
-        colors: ["#6EE7B7"]
-      }
+        fontSize: "16px",
+        colors: ["#6EE7B7"],
+      },
     },
     colors: ["#10B981"],
     title: {
       text: props.data.title,
       align: "center",
-    }
-  }
+    },
+  };
 
   const series = [
     {
       name: "temperature",
-      data: props.data.measuredTemperatures
-    }
-  ]
+      data: props.data.measuredTemperatures,
+    },
+  ];
 
   return (
     <div className={classes.root}>
-      <Chart type="bar" width="500px" height="300px" options={options} series={series} />
+      <Chart className={classes.chart}
+        type="bar"
+        height="300px"
+        options={options}
+        series={series}
+      />
     </div>
-  )
-}
+  );
+};
 
-export default Graph
+export default Graph;

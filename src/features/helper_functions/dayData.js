@@ -1,6 +1,4 @@
-
-
-export const findMeasurementsOfDay = (data) => {
+const findMeasurementsOfDay = (data) => {
   const days = []
   let day = [data[0]]
   for (var i=1; i<data.length; i++) {
@@ -15,3 +13,5 @@ export const findMeasurementsOfDay = (data) => {
   day = []
   return days
 }
+
+export default findMeasurementsOfDay
