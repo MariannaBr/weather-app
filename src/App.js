@@ -2,6 +2,7 @@ import TempCheck from "./features/Components/TempCheck";
 import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
 import Graph from "./features/Components/Graph";
+import giveNiceDate from "./features/helper_functions/niceDate";
 import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -24,6 +25,18 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     color: "blue",
   },
+  arrows: {
+    paddingTop: "40px"
+  },
+  cards: {
+    paddingTop: "40px"
+  },
+  title: {
+    padding: "40px",
+    fontWeight: "bold",
+    fontSize: "40px",
+    color: "#10B981"
+  }
 }));
 
 function App() {
@@ -45,11 +58,12 @@ function App() {
   } else {
     const days = findMeasurementsOfDay(weatherData);
     const daysToShow = days.slice(arrowIndex, arrowIndex + 3);
+    const city = weatherData[0].city
 
     const getTimeAndTemp = (data) => {
       let times = [];
       let values = [];
-      let title = data[0].dayId;
+      let title = giveNiceDate(data);
       let GraphData = {
         title: title,
         measurementTimes: times,
@@ -101,12 +115,13 @@ function App() {
 
     return (
       <div className="App">
+      <div className={classes.title}>{city}</div>
         <TempCheck value={tempType} handleChange={handleChange} />
-        <Grid container direction="row" justify="space-around">
+        <Grid container direction="row" justify="space-around" className={classes.arrows}>
           <Arrow left={true} handler={leftHandler} visible={leftInvisible} />
           <Arrow left={false} handler={rightHandler} visible={rightInvisible} />
         </Grid>
-        <Grid container direction="row" justify="space-evenly">
+        <Grid container direction="row" justify="space-evenly" className={classes.cards}>
           {daysToShow.map((day) => (
             <Grid key={day[0].dayId} item className={classes.grid}>
               <DayCard

@@ -33,7 +33,7 @@ const Graph = (props) => {
       categories: props.data.measurementTimes,
       labels: {
         style: {
-          colors: "#D1D5DB",
+          colors: "#9CA3AF",
           fontSize: "14px",
         },
       },
@@ -41,7 +41,7 @@ const Graph = (props) => {
     yaxis: {
       labels: {
         style: {
-          colors: "#D1D5DB",
+          colors: "#9CA3AF",
           fontSize: "14px",
         },
       },

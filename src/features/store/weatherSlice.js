@@ -31,12 +31,14 @@ export default weatherSlice.reducer;
 
 function preprocessData(data) {
 
+  const city = data.city.name
   let allMeasurements = data.list
   
   const dayId = allMeasurements[0].dt_txt.split(" ")[0]
   const time = allMeasurements[0].dt_txt.split(" ")[1]
   allMeasurements[0].dayId = dayId
   allMeasurements[0].time = time
+  allMeasurements[0].city = city
   allMeasurements[0].main.tempF = convertKtoF(allMeasurements[0].main.temp)
   allMeasurements[0].main.tempC = convertKtoC(allMeasurements[0].main.temp)
 

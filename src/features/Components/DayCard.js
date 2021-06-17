@@ -1,50 +1,48 @@
 import React from "react";
 import { Card, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import averageTemp from "../helper_functions/averageTemp"
+import averageTemp from "../helper_functions/averageTemp";
+import giveNiceDate from "../helper_functions/niceDate";
 
 const useStyles = makeStyles((theme) => ({
   card: {
     textAlign: "left",
-    [theme.breakpoints.down('sm')]: {
-      padding: "10px"
-    }
+    [theme.breakpoints.down("sm")]: {
+      padding: "10px",
+    },
   },
   date: {
     fontSize: 16,
     padding: "10px",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 10,
-      padding: "5px"
+      padding: "5px",
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: 8,
-      padding: "2px"
-    }
+      padding: "2px",
+    },
   },
   temp: {
     fontSize: 18,
+    color: "#10B981",
     fontWeight: "bold",
     padding: "1rem",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       fontSize: 12,
-      padding: "5px"
+      padding: "5px",
     },
-    [theme.breakpoints.down('xs')]: {
+    [theme.breakpoints.down("xs")]: {
       fontSize: 10,
-      padding: "2px"
-    }
+      padding: "2px",
+    },
   },
 }));
 
 const DayCard = (props) => {
   const classes = useStyles();
   const dayMeasurements = props.dayData;
-  const year = dayMeasurements[0].dayId.split("-")[0];
-  const month = dayMeasurements[0].dayId.split("-")[1];
-  const day = dayMeasurements[0].dayId.split("-")[2];
-  const date = day + ". " + month + ". " + year;
-
+  const date = giveNiceDate(dayMeasurements)
   const averageTemperature = averageTemp(dayMeasurements, props.tempType);
 
   let temperatureType;
@@ -62,10 +60,10 @@ const DayCard = (props) => {
   return (
     <Button onClick={handleOnClick}>
       <Card className={classes.card}>
-          <Typography className={classes.date}>Date: {date}</Typography>
-          <Typography className={classes.temp}>
-            Temp: {averageTemperature} {temperatureType}
-          </Typography>
+        <Typography className={classes.date}>Date: {date}</Typography>
+        <Typography className={classes.temp}>
+          Temp: {averageTemperature} {temperatureType}
+        </Typography>
       </Card>
     </Button>
   );
