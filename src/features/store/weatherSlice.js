@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-require('dotenv').config()
+import { convertKtoF, convertKtoC } from "../helper_functions/convertTemp"
 
 const initialState = {
   isLoading: true,
@@ -29,11 +29,6 @@ export const { dataLoading, dataLoaded, addDayId } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
 
-function convertFtoC(temp) {
-  const tempC = parseFloat(((temp - 32) * 5/9).toFixed(2))
-  return tempC
-}
-
 function preprocessData(data) {
 
   let allMeasurements = data.list
@@ -42,14 +37,16 @@ function preprocessData(data) {
   const time = allMeasurements[0].dt_txt.split(" ")[1]
   allMeasurements[0].dayId = dayId
   allMeasurements[0].time = time
-  allMeasurements[0].main.tempC = convertFtoC(allMeasurements[0].main.temp)
+  allMeasurements[0].main.tempF = convertKtoF(allMeasurements[0].main.temp)
+  allMeasurements[0].main.tempC = convertKtoC(allMeasurements[0].main.temp)
 
   for ( var i=1; i<allMeasurements.length; i++ ) {
     const dayId = allMeasurements[i].dt_txt.split(" ")[0]
     const time = allMeasurements[i].dt_txt.split(" ")[1]
     allMeasurements[i].dayId = dayId
     allMeasurements[i].time = time
-    allMeasurements[i].main.tempC = convertFtoC(allMeasurements[i].main.temp)
+    allMeasurements[i].main.tempF = convertKtoF(allMeasurements[i].main.temp)
+    allMeasurements[i].main.tempC = convertKtoC(allMeasurements[i].main.temp)
   }
   return allMeasurements
 }

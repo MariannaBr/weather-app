@@ -3,7 +3,7 @@ import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
 import Graph from "./features/Components/Graph";
 import { Grid } from "@material-ui/core";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectWeather } from "./features/store/weatherSlice";
 import findMeasurementsOfDay from "./features/helper_functions/dayData";
@@ -31,12 +31,10 @@ function App() {
   const [tempType, setTempType] = useState("Fahrenheit");
   const [arrowIndex, setArrowIndex] = useState(0);
   const [graphId, setGraphId] = useState("");
-  //const [rightInvisible, setRightInvisible] = useState(false)
-  //const [leftInvisible, setLeftInvisible] = useState(true)
   const weatherData = useSelector(selectWeather);
   const loading = useSelector((state) => state.weather.isLoading);
-  let rightInvisible = false
-  let leftInvisible = true
+  let rightInvisible = false;
+  let leftInvisible = true;
 
   if (loading) {
     return (
@@ -60,7 +58,7 @@ function App() {
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
         if (tempType === "Fahrenheit") {
-          values.push(data[i].main.temp);
+          values.push(data[i].main.tempF);
         } else if (tempType === "Celcius") {
           values.push(data[i].main.tempC);
         }
@@ -89,20 +87,17 @@ function App() {
       }
       setGraphId("");
     };
-    console.log("days", days.length);
-    console.log("index", arrowIndex);
 
-      if (arrowIndex <= 0) {
-        leftInvisible = true
-        rightInvisible = false
-      } else if (arrowIndex >= days.length - 3) {
-        leftInvisible = false
-        rightInvisible = true
-      } else {
-        leftInvisible = false
-        rightInvisible = false
-      }
-    
+    if (arrowIndex <= 0) {
+      leftInvisible = true;
+      rightInvisible = false;
+    } else if (arrowIndex >= days.length - 3) {
+      leftInvisible = false;
+      rightInvisible = true;
+    } else {
+      leftInvisible = false;
+      rightInvisible = false;
+    }
 
     return (
       <div className="App">
@@ -124,7 +119,7 @@ function App() {
         </Grid>
         {daysToShow.map(
           (day) =>
-            day[0].dayId === graphId && <Graph data={getTimeAndTemp(day)} />
+            day[0].dayId === graphId && <Graph key={day[0].dayId} data={getTimeAndTemp(day)} />
         )}
       </div>
     );
