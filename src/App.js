@@ -2,7 +2,7 @@ import TempCheck from "./features/Components/TempCheck";
 import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
 import Graph from "./features/Components/Graph";
-import { Grid, DataGrid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { selectWeather } from "./features/store/weatherSlice";
@@ -11,6 +11,8 @@ import "./App.css";
 
 function App() {
   const [tempType, setTempType] = useState("Fahrenheit");
+  const [arrowIndex, setArrowIndex] = useState(0)
+  const [graphId, setGraphId] = useState("")
   const weatherData = useSelector(selectWeather);
   const loading = useSelector((state) => state.weather.isLoading);
 
@@ -22,13 +24,14 @@ function App() {
     );
   } else {
     const days = findMeasurementsOfDay(weatherData);
-    
-    console.log("days", days);
+    const daysToShow = days.slice(arrowIndex, arrowIndex + 3)
 
     const getTimeAndTemp = (data) => {
       let times = [];
       let values = [];
-      let GraphData = { measurementTimes: times, measuredTemperatures: values };
+      let title = data[0].dayId
+      console.log(title)
+      let GraphData = { title: title, measurementTimes: times, measuredTemperatures: values };
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
         if (tempType === "Fahrenheit") {
@@ -40,27 +43,45 @@ function App() {
       return GraphData;
     };
 
-    const graphData = getTimeAndTemp(days[0])
+    const graphIdHandler = (id) => {
+      setGraphId(id)
+    }
 
     const handleChange = (event) => {
       setTempType(event.target.value);
     };
 
+    const rightHandler = () => {
+      if (arrowIndex < days.length - 3) {
+        setArrowIndex(arrowIndex + 1)
+      }
+      setGraphId("")
+    }
+
+    const leftHandler = () => {
+      if (arrowIndex > 0) {
+        setArrowIndex(arrowIndex - 1)
+      }
+      setGraphId("")
+    }
+
+    
+
     return (
       <div className="App">
         <TempCheck value={tempType} handleChange={handleChange} />
         <Grid container direction="row" justify="space-around">
-          <Arrow left={true} />
-          <Arrow left={false} />
+          <Arrow left={true} handler={leftHandler} />
+          <Arrow left={false} handler={rightHandler} />
         </Grid>
         <Grid container direction="row" justify="space-evenly">
-          {days.map((day) => (
+          {daysToShow.map((day) => (
             <Grid key={day[0].dayId} item>
-              <DayCard dayData={day} tempType={tempType} />
+              <DayCard dayData={day} tempType={tempType} handler={graphIdHandler} />
             </Grid>
           ))}
         </Grid>
-        <Graph data={graphData} />
+        {daysToShow.map(day => day[0].dayId === graphId && <Graph data={getTimeAndTemp(day)} />)}
       </div>
     );
   }

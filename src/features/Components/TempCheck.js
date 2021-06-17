@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { RadioGroup, FormControlLabel, Radio, Grid } from "@material-ui/core";
 
 const TempCheck = (props) => {
 
-  console.log("cel", props.value)
   return (
     <Grid container direction="row" justify="space-evenly">
       <Grid item>

@@ -1,5 +1,5 @@
-import React from 'react'
-import { Card, CardContent, Typography } from '@material-ui/core'
+import React, { useState } from 'react'
+import { Card, CardContent, Typography, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
 const useStyles = makeStyles({
@@ -23,6 +23,7 @@ const DayCard = (props) => {
   const month = dayMeasurements[0].dayId.split("-")[1]
   const day = dayMeasurements[0].dayId.split("-")[2]
   const date = day + ". " + month + ". " + year
+  const [color, setColor] = useState("default")
 
   const averageTemp = (data) => {
     let tempSum = 4
@@ -47,8 +48,14 @@ const DayCard = (props) => {
     temperatureType = "°C"
   }
 
+  const handleOnClick = () => {
+    const id = dayMeasurements[0].dayId
+    props.handler(id)
+    setColor("primary")
+  }
 
   return(
+    <Button onClick={handleOnClick} color={color}>
     <Card>
       <CardContent>
         <Typography className={classes.title}>
@@ -59,6 +66,7 @@ const DayCard = (props) => {
         </Typography>
       </CardContent>
     </Card>
+    </Button>
   )
 }
 

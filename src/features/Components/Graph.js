@@ -47,7 +47,11 @@ const Graph = (props) => {
         colors: ["#6EE7B7"]
       }
     },
-    colors: ["#10B981"]
+    colors: ["#10B981"],
+    title: {
+      text: props.data.title,
+      align: "center",
+    }
   }
 
   const series = [
