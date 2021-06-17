@@ -59,7 +59,7 @@ export const fetchData = () => async (dispatch) => {
   dispatch(dataLoading());
   let data
   const response = await fetch(
-    `http://api.openweathermap.org/data/2.5/forecast?q=Munich,de&APPID=${process.env.REACT_APP_WEATHER_API_KEY}&cnt=40`,
+    `http://api.openweathermap.org/data/2.5/forecast?q=Munich,de&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40`,
     { method: "GET" })
   data = await response.json()
   if (response.ok) {

@@ -3,7 +3,7 @@ import DayCard from "./features/Components/DayCard";
 import Arrow from "./features/Components/Arrow";
 import Graph from "./features/Components/Graph";
 import { Grid } from "@material-ui/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { selectWeather } from "./features/store/weatherSlice";
 import findMeasurementsOfDay from "./features/helper_functions/dayData";
@@ -13,44 +13,50 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   grid: {
     padding: "2px",
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down("sm")]: {
       justifyContent: "center",
       alignItems: "center",
-      maxWidth: 400
-    }
+      maxWidth: 400,
+    },
   },
   loading: {
     fontSize: "32px",
     fontWeight: "bold",
-    color: "blue"
-  }
+    color: "blue",
+  },
 }));
 
 function App() {
   const classes = useStyles();
   const [tempType, setTempType] = useState("Fahrenheit");
-  const [arrowIndex, setArrowIndex] = useState(0)
-  const [graphId, setGraphId] = useState("")
+  const [arrowIndex, setArrowIndex] = useState(0);
+  const [graphId, setGraphId] = useState("");
+  //const [rightInvisible, setRightInvisible] = useState(false)
+  //const [leftInvisible, setLeftInvisible] = useState(true)
   const weatherData = useSelector(selectWeather);
   const loading = useSelector((state) => state.weather.isLoading);
+  let rightInvisible = false
+  let leftInvisible = true
 
   if (loading) {
     return (
       <div className="App">
-      <div className={classes.loading}>
-        Loading
-      </div>
+        <div className={classes.loading}>Loading</div>
       </div>
     );
   } else {
     const days = findMeasurementsOfDay(weatherData);
-    const daysToShow = days.slice(arrowIndex, arrowIndex + 3)
+    const daysToShow = days.slice(arrowIndex, arrowIndex + 3);
 
     const getTimeAndTemp = (data) => {
       let times = [];
       let values = [];
-      let title = data[0].dayId
-      let GraphData = { title: title, measurementTimes: times, measuredTemperatures: values };
+      let title = data[0].dayId;
+      let GraphData = {
+        title: title,
+        measurementTimes: times,
+        measuredTemperatures: values,
+      };
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
         if (tempType === "Fahrenheit") {
@@ -63,8 +69,8 @@ function App() {
     };
 
     const graphIdHandler = (id) => {
-      setGraphId(id)
-    }
+      setGraphId(id);
+    };
 
     const handleChange = (event) => {
       setTempType(event.target.value);
@@ -72,33 +78,54 @@ function App() {
 
     const rightHandler = () => {
       if (arrowIndex < days.length - 3) {
-        setArrowIndex(arrowIndex + 1)
+        setArrowIndex(arrowIndex + 1);
       }
-      setGraphId("")
-    }
+      setGraphId("");
+    };
 
     const leftHandler = () => {
       if (arrowIndex > 0) {
-        setArrowIndex(arrowIndex - 1)
+        setArrowIndex(arrowIndex - 1);
       }
-      setGraphId("")
-    }
+      setGraphId("");
+    };
+    console.log("days", days.length);
+    console.log("index", arrowIndex);
+
+      if (arrowIndex <= 0) {
+        leftInvisible = true
+        rightInvisible = false
+      } else if (arrowIndex >= days.length - 3) {
+        leftInvisible = false
+        rightInvisible = true
+      } else {
+        leftInvisible = false
+        rightInvisible = false
+      }
+    
 
     return (
       <div className="App">
         <TempCheck value={tempType} handleChange={handleChange} />
         <Grid container direction="row" justify="space-around">
-          <Arrow left={true} handler={leftHandler} />
-          <Arrow left={false} handler={rightHandler} />
+          <Arrow left={true} handler={leftHandler} visible={leftInvisible} />
+          <Arrow left={false} handler={rightHandler} visible={rightInvisible} />
         </Grid>
         <Grid container direction="row" justify="space-evenly">
           {daysToShow.map((day) => (
             <Grid key={day[0].dayId} item className={classes.grid}>
-              <DayCard dayData={day} tempType={tempType} handler={graphIdHandler} />
+              <DayCard
+                dayData={day}
+                tempType={tempType}
+                handler={graphIdHandler}
+              />
             </Grid>
           ))}
         </Grid>
-        {daysToShow.map(day => day[0].dayId === graphId && <Graph data={getTimeAndTemp(day)} />)}
+        {daysToShow.map(
+          (day) =>
+            day[0].dayId === graphId && <Graph data={getTimeAndTemp(day)} />
+        )}
       </div>
     );
   }

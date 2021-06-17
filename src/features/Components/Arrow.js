@@ -5,7 +5,7 @@ import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
 
 const Arrow = (props) => {
   return (
-    <IconButton onClick={props.handler}>
+    <IconButton onClick={props.handler} disabled={props.visible}>
       {props.left ? <ArrowLeftIcon /> : <ArrowRightIcon />}
     </IconButton>
   );
