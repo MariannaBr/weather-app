@@ -5,6 +5,11 @@ import averageTemp from "../helper_functions/averageTemp";
 import giveNiceDate from "../helper_functions/niceDate";
 
 const useStyles = makeStyles((theme) => ({
+  button: {
+    '&:focus': {
+      boxShadow: '0 0 0 0.1rem #10B981',
+    },
+  },
   card: {
     textAlign: "left",
     [theme.breakpoints.down("sm")]: {
@@ -58,7 +63,7 @@ const DayCard = (props) => {
   };
 
   return (
-    <Button onClick={handleOnClick}>
+    <Button onClick={handleOnClick} disableRipple className={classes.button}>
       <Card className={classes.card}>
         <Typography className={classes.date}>Date: {date}</Typography>
         <Typography className={classes.temp}>

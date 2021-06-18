@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   loading: {
     fontSize: "32px",
     fontWeight: "bold",
-    color: "blue",
+    color: "#10B981",
   },
   arrows: {
     paddingTop: "40px"
