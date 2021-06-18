@@ -5,13 +5,13 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: "4px",
-    paddingTop: "60px"
+    paddingTop: "60px",
   },
   chart: {
     width: "600px",
-    [theme.breakpoints.down('sm')]: {
-      width: "100%"
-    }
+    [theme.breakpoints.down("sm")]: {
+      width: "100%",
+    },
   },
   title: {
     fontSize: 18,
@@ -70,7 +70,8 @@ const Graph = (props) => {
 
   return (
     <div className={classes.root}>
-      <Chart className={classes.chart}
+      <Chart
+        className={classes.chart}
         type="bar"
         height="300px"
         options={options}

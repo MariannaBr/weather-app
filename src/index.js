@@ -5,7 +5,7 @@ import App from './App';
 import store from './app/store';
 import { Provider } from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import { fetchData } from "./features/store/weatherSlice"
+import { fetchData } from "./features/redux/weatherSlice"
 
 store.dispatch(fetchData())
 

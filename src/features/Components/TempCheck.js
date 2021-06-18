@@ -3,7 +3,6 @@ import { RadioGroup, FormControlLabel, Grid } from "@material-ui/core";
 import StyledRadio from "./StyledRadio";
 
 const TempCheck = (props) => {
-
   return (
     <Grid container direction="row" justify="space-evenly">
       <Grid item>

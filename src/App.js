@@ -6,7 +6,7 @@ import giveNiceDate from "./features/helper_functions/niceDate";
 import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectWeather } from "./features/store/weatherSlice";
+import { selectWeather } from "./features/redux/weatherSlice";
 import findMeasurementsOfDay from "./features/helper_functions/dayData";
 import "./App.css";
 import { makeStyles } from "@material-ui/core/styles";

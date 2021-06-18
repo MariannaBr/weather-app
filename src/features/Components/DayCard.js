@@ -6,8 +6,8 @@ import giveNiceDate from "../helper_functions/niceDate";
 
 const useStyles = makeStyles((theme) => ({
   button: {
-    '&:focus': {
-      boxShadow: '0 0 0 0.1rem #10B981',
+    "&:focus": {
+      boxShadow: "0 0 0 0.1rem #10B981",
     },
   },
   card: {
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 const DayCard = (props) => {
   const classes = useStyles();
   const dayMeasurements = props.dayData;
-  const date = giveNiceDate(dayMeasurements)
+  const date = giveNiceDate(dayMeasurements);
   const averageTemperature = averageTemp(dayMeasurements, props.tempType);
 
   let temperatureType;
