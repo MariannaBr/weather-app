@@ -92,14 +92,12 @@ function App() {
       if (arrowIndex < days.length - 3) {
         setArrowIndex(arrowIndex + 1);
       }
-      setGraphId("");
     };
 
     const leftHandler = () => {
       if (arrowIndex > 0) {
         setArrowIndex(arrowIndex - 1);
       }
-      setGraphId("");
     };
 
     if (arrowIndex <= 0) {
@@ -132,7 +130,7 @@ function App() {
             </Grid>
           ))}
         </Grid>
-        {daysToShow.map(
+        {days.map(
           (day) =>
             day[0].dayId === graphId && <Graph key={day[0].dayId} data={getTimeAndTemp(day)} />
         )}
