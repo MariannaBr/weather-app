@@ -29,25 +29,21 @@ export const { dataLoading, dataLoaded, addDayId } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
 
+// takes the data from api and creates a list of only necessary data for our app
 function preprocessData(data) {
   const city = data.city.name;
-  let allMeasurements = data.list;
+  const allMeasurements = [];
 
-  const dayId = allMeasurements[0].dt_txt.split(" ")[0];
-  const time = allMeasurements[0].dt_txt.split(" ")[1];
-  allMeasurements[0].dayId = dayId;
-  allMeasurements[0].time = time;
-  allMeasurements[0].city = city;
-  allMeasurements[0].main.tempF = convertKtoF(allMeasurements[0].main.temp);
-  allMeasurements[0].main.tempC = convertKtoC(allMeasurements[0].main.temp);
-
-  for (var i = 1; i < allMeasurements.length; i++) {
-    const dayId = allMeasurements[i].dt_txt.split(" ")[0];
-    const time = allMeasurements[i].dt_txt.split(" ")[1];
-    allMeasurements[i].dayId = dayId;
-    allMeasurements[i].time = time;
-    allMeasurements[i].main.tempF = convertKtoF(allMeasurements[i].main.temp);
-    allMeasurements[i].main.tempC = convertKtoC(allMeasurements[i].main.temp);
+  for (var i=0; i<data.list.length; i++) {
+    const dayId = data.list[i].dt_txt.split(" ")[0];
+    const time = data.list[i].dt_txt.split(" ")[1];
+    allMeasurements[i] = {
+      dayId: dayId,
+      time: time,
+      city: city,
+      tempF: convertKtoF(data.list[i].main.temp),
+      tempC: convertKtoC(data.list[i].main.temp)
+    }
   }
   return allMeasurements;
 }

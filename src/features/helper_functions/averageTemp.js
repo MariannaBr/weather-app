@@ -2,9 +2,9 @@ const averageTemp = (data, tempType) => {
   let tempSum = 0;
   for (var i = 0; i < data.length; i++) {
     if (tempType === "Fahrenheit") {
-      tempSum += data[i].main.tempF;
+      tempSum += data[i].tempF;
     } else if (tempType === "Celcius") {
-      tempSum += data[i].main.tempC;
+      tempSum += data[i].tempC;
     }
   }
   const Temperature = Math.round((tempSum / data.length));

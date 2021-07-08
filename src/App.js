@@ -57,6 +57,7 @@ function App() {
     );
   } else {
     const days = findMeasurementsOfDay(weatherData);
+    console.log(weatherData)
     const daysToShow = days.slice(arrowIndex, arrowIndex + 3);
     const city = weatherData[0].city
 
@@ -72,9 +73,9 @@ function App() {
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
         if (tempType === "Fahrenheit") {
-          values.push(data[i].main.tempF);
+          values.push(data[i].tempF);
         } else if (tempType === "Celcius") {
-          values.push(data[i].main.tempC);
+          values.push(data[i].tempC);
         }
       }
       return GraphData;
