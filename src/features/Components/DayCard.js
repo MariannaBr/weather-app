@@ -1,59 +1,23 @@
 import React from "react";
+
 import { Card, Typography, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { DayCard_style } from "../../css/css_config";
+
 import averageTemp from "../helper_functions/averageTemp";
 import giveNiceDate from "../helper_functions/niceDate";
 
-const useStyles = makeStyles((theme) => ({
-  button: {
-    "&:focus": {
-      boxShadow: "0 0 0 0.1rem #10B981",
-    },
-  },
-  card: {
-    textAlign: "left",
-    [theme.breakpoints.down("sm")]: {
-      padding: "10px",
-    },
-  },
-  date: {
-    fontSize: 16,
-    padding: "10px",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 10,
-      padding: "5px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      fontSize: 8,
-      padding: "2px",
-    },
-  },
-  temp: {
-    fontSize: 18,
-    color: "#10B981",
-    fontWeight: "bold",
-    padding: "1rem",
-    [theme.breakpoints.down("sm")]: {
-      fontSize: 12,
-      padding: "5px",
-    },
-    [theme.breakpoints.down("xs")]: {
-      fontSize: 10,
-      padding: "2px",
-    },
-  },
-}));
+import { celcius, fahrenheit } from "../utils/constants";
 
 const DayCard = (props) => {
-  const classes = useStyles();
+  const classes = DayCard_style();
   const dayMeasurements = props.dayData;
   const date = giveNiceDate(dayMeasurements);
   const averageTemperature = averageTemp(dayMeasurements, props.tempType);
 
   let temperatureType;
-  if (props.tempType === "Fahrenheit") {
+  if (props.tempType === fahrenheit) {
     temperatureType = "F";
-  } else if (props.tempType === "Celcius") {
+  } else if (props.tempType === celcius) {
     temperatureType = "°C";
   }
 

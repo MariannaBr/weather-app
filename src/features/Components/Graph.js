@@ -1,29 +1,10 @@
 import React from "react";
 import Chart from "react-apexcharts";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: "4px",
-    paddingTop: "60px",
-  },
-  chart: {
-    width: "600px",
-    [theme.breakpoints.down("sm")]: {
-      width: "100%",
-    },
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+import { Graph_style } from "../../css/css_config";
 
 const Graph = (props) => {
-  const classes = useStyles();
+  const classes = Graph_style();
 
   const options = {
     chart: {

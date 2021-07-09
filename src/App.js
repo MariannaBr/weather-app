@@ -1,47 +1,26 @@
-import TempCheck from "./features/Components/TempCheck";
-import DayCard from "./features/Components/DayCard";
-import Arrow from "./features/Components/Arrow";
-import Graph from "./features/Components/Graph";
-import giveNiceDate from "./features/helper_functions/niceDate";
-import { Grid } from "@material-ui/core";
 import { useState } from "react";
 import { useSelector } from "react-redux";
-import { selectWeather } from "./features/redux/weatherSlice";
-import findMeasurementsOfDay from "./features/helper_functions/dayData";
-import "./App.css";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  grid: {
-    padding: "2px",
-    [theme.breakpoints.down("sm")]: {
-      justifyContent: "center",
-      alignItems: "center",
-      maxWidth: 400,
-    },
-  },
-  loading: {
-    fontSize: "32px",
-    fontWeight: "bold",
-    color: "#10B981",
-  },
-  arrows: {
-    paddingTop: "40px"
-  },
-  cards: {
-    paddingTop: "40px"
-  },
-  title: {
-    padding: "40px",
-    fontWeight: "bold",
-    fontSize: "40px",
-    color: "#10B981"
-  }
-}));
+import { Grid } from "@material-ui/core";
+
+import "./css/css_config.js";
+
+import Arrow from "./features/Components/Arrow";
+import DayCard from "./features/Components/DayCard";
+import Graph from "./features/Components/Graph";
+import TempCheck from "./features/Components/TempCheck";
+
+import giveNiceDate from "./features/helper_functions/niceDate";
+import findMeasurementsOfDay from "./features/helper_functions/dayData";
+
+import { celcius, fahrenheit } from "./features/utils/constants";
+
+import { selectWeather } from "./features/redux/weatherSlice";
+import { App_style } from "./css/css_config";
 
 function App() {
-  const classes = useStyles();
-  const [tempType, setTempType] = useState("Fahrenheit");
+  const classes = App_style();
+  const [tempType, setTempType] = useState(fahrenheit);
   const [arrowIndex, setArrowIndex] = useState(0);
   const [graphId, setGraphId] = useState("");
   const weatherData = useSelector(selectWeather);
@@ -51,15 +30,14 @@ function App() {
 
   if (loading) {
     return (
-      <div className="App">
+      <div className={classes.body}>
         <div className={classes.loading}>Loading</div>
       </div>
     );
   } else {
     const days = findMeasurementsOfDay(weatherData);
-    console.log(weatherData)
     const daysToShow = days.slice(arrowIndex, arrowIndex + 3);
-    const city = weatherData[0].city
+    const city = days[0][0].city;
 
     const getTimeAndTemp = (data) => {
       let times = [];
@@ -72,9 +50,9 @@ function App() {
       };
       for (var i = 0; i < data.length; i++) {
         times.push(data[i].time);
-        if (tempType === "Fahrenheit") {
+        if (tempType === fahrenheit) {
           values.push(data[i].tempF);
-        } else if (tempType === "Celcius") {
+        } else if (tempType === celcius) {
           values.push(data[i].tempC);
         }
       }
@@ -113,14 +91,24 @@ function App() {
     }
 
     return (
-      <div className="App">
-      <div className={classes.title}>{city}</div>
+      <div className={classes.body}>
+        <div className={classes.title}>{city}</div>
         <TempCheck value={tempType} handleChange={handleChange} />
-        <Grid container direction="row" justify="space-around" className={classes.arrows}>
+        <Grid
+          container
+          direction="row"
+          justify="space-around"
+          className={classes.arrows}
+        >
           <Arrow left={true} handler={leftHandler} visible={leftInvisible} />
           <Arrow left={false} handler={rightHandler} visible={rightInvisible} />
         </Grid>
-        <Grid container direction="row" justify="space-evenly" className={classes.cards}>
+        <Grid
+          container
+          direction="row"
+          justify="space-evenly"
+          className={classes.cards}
+        >
           {daysToShow.map((day) => (
             <Grid key={day[0].dayId} item className={classes.grid}>
               <DayCard
@@ -133,7 +121,9 @@ function App() {
         </Grid>
         {days.map(
           (day) =>
-            day[0].dayId === graphId && <Graph key={day[0].dayId} data={getTimeAndTemp(day)} />
+            day[0].dayId === graphId && (
+              <Graph key={day[0].dayId} data={getTimeAndTemp(day)} />
+            )
         )}
       </div>
     );
