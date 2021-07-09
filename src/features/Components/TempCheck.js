@@ -1,6 +1,7 @@
 import React from "react";
 import { RadioGroup, FormControlLabel, Grid } from "@material-ui/core";
 import StyledRadio from "./StyledRadio";
+import { celcius, fahrenheit } from "../utils/constants";
 
 const TempCheck = (props) => {
   return (
@@ -9,18 +10,18 @@ const TempCheck = (props) => {
         <RadioGroup
           row
           name="temperature"
-          value={props.value ? props.value : "Fahrenheit"}
+          value={props.value}
           onChange={props.handleChange}
         >
           <FormControlLabel
-            value="Celcius"
+            value={celcius}
             control={<StyledRadio />}
-            label="Celcius"
+            label={celcius}
           />
           <FormControlLabel
-            value="Fahrenheit"
+            value={fahrenheit}
             control={<StyledRadio />}
-            label="Fahrenheit"
+            label={fahrenheit}
           />
         </RadioGroup>
       </Grid>

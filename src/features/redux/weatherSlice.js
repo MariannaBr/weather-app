@@ -18,14 +18,10 @@ const weatherSlice = createSlice({
       state.data = action.payload;
       state.isLoading = false;
     },
-    addDayId(state, action) {
-      const { id, dayId } = action.payload;
-      state.data.list[id].dayId = dayId;
-    },
   },
 });
 
-export const { dataLoading, dataLoaded, addDayId } = weatherSlice.actions;
+export const { dataLoading, dataLoaded } = weatherSlice.actions;
 
 export default weatherSlice.reducer;
 

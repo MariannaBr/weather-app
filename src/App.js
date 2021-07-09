@@ -2,8 +2,7 @@ import { useState } from "react";
 import { useSelector } from "react-redux";
 
 import { Grid } from "@material-ui/core";
-
-import "./css/css_config.js";
+import { App_style } from "./css/css_config";
 
 import Arrow from "./features/Components/Arrow";
 import DayCard from "./features/Components/DayCard";
@@ -16,7 +15,7 @@ import findMeasurementsOfDay from "./features/helper_functions/dayData";
 import { celcius, fahrenheit } from "./features/utils/constants";
 
 import { selectWeather } from "./features/redux/weatherSlice";
-import { App_style } from "./css/css_config";
+
 
 function App() {
   const classes = App_style();
