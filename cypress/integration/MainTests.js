@@ -19,13 +19,11 @@ context("mocking API", () => {
       "https://api.openweathermap.org/data/2.5/forecast?q=Munich,de&APPID=75f972b80e26f14fe6c920aa6a85ad57&cnt=40",
       { fixture: "test_api.json" }
     );
-    cy.visit("https://mariannabr.github.io/weather-app/");
+    cy.visit("http://localhost:3000/weather-app");
   });
 
   it("default label of temperature is Fahrenheit", () => {
-    cy.get(
-      "#root > div > div:nth-child(2) > div > div > label:nth-child(2) > span.MuiTypography-root.MuiFormControlLabel-label.MuiTypography-body1"
-    ).should("have.text", "Fahrenheit");
+    cy.get('[data-cy=Fahrenheit]').should("have.text", "Fahrenheit");
   });
 
   it("switch the temperature radio", () => {

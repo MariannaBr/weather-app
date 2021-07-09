@@ -17,11 +17,13 @@ const TempCheck = (props) => {
             value={celcius}
             control={<StyledRadio />}
             label={celcius}
+            data-cy={celcius}
           />
           <FormControlLabel
             value={fahrenheit}
             control={<StyledRadio />}
             label={fahrenheit}
+            data-cy={fahrenheit}
           />
         </RadioGroup>
       </Grid>
